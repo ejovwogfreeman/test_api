@@ -16,10 +16,10 @@ const Grid = require("gridfs-stream");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const https = require("https");
 
-const file = fs.readFileSync(
-  "C:\\Users\\Admin\\Desktop\\awsec2\\BF46E86686E794DA52DFB5E968D5F016.txt"
-);
+const key = fs.readFileSync("private.key");
+const cert = fs.readFileSync("certificate.crt");
 
 const corsOptions = {
   origin: "*",
@@ -52,7 +52,7 @@ app.use(
   })
 );
 
-app.get(
+/* app.get(
   "/.well-known/pki-validation/BF46E86686E794DA52DFB5E968D5F016.txt",
   (req, res) => {
     res.sendFile(
@@ -60,6 +60,12 @@ app.get(
     );
   }
 );
+ */
+
+const cred = {
+  key,
+  cert,
+};
 
 app.get("/file/:filename", async (req, res) => {
   try {
@@ -86,3 +92,6 @@ const func = async () => {
 app.listen(port, () => {
   console.log(`server started at port ${port}`);
 });
+
+const httpssever = https.createServer(cred, app);
+httpssever.listen(8443);
