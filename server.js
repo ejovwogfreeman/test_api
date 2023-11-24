@@ -15,6 +15,11 @@ const { GridFsStorage } = require("multer-gridfs-storage");
 const Grid = require("gridfs-stream");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const fs = require("fs");
+
+const file = fs.readFileSync(
+  "C:\\Users\\Admin\\Desktop\\awsec2\\BF46E86686E794DA52DFB5E968D5F016.txt"
+);
 
 const corsOptions = {
   origin: "*",
@@ -45,6 +50,15 @@ app.use(
     parameterLimit: 100000,
     extended: true,
   })
+);
+
+app.get(
+  "/.well-known/pki-validation/BF46E86686E794DA52DFB5E968D5F016.txt",
+  (req, res) => {
+    res.sendFile(
+      "C:\\Users\\Admin\\Desktop\\awsec2\\BF46E86686E794DA52DFB5E968D5F016.txt"
+    );
+  }
 );
 
 app.get("/file/:filename", async (req, res) => {
